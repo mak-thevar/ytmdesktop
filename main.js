@@ -219,7 +219,7 @@ function createWindow() {
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools({ mode: 'detach' });
-  // view.webContents.openDevTools({ mode: 'detach' });
+  //view.webContents.openDevTools({ mode: 'detach' });
   mediaControl.createThumbar(mainWindow, playerInfo()["isPaused"], likeStatus);
 
   if (windowMaximized) {
@@ -287,6 +287,18 @@ function createWindow() {
       global.sharedObj.paused = false;
       renderer_for_status_bar.send("update-status-bar");
     }
+
+    /**
+     * Start the visualizer
+     */
+    const visualizerPath = path.join(__dirname, "visualizer/default.js");
+    view.webContents.executeJavaScript(
+      fs.readFileSync(visualizerPath).toString(),
+      null,
+      function(res) {
+        console.log("Executed Visualizer");
+      }
+    );
 
     /**
      * GET SONG TITLE
